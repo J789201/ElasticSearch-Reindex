@@ -104,7 +104,7 @@ if( $readset -notmatch "acknowledged" )
   $latest= [math]::floor($perc)
   Write-Progress -activity "reindex in progress" -Status "Progress:" -PercentComplete $latest
   start-sleep 3
-    if ((Invoke-WebRequest -Uri "${URL}/_tasks?detailed=true&actions=*reindex").content.length -lt 20)
+    if ((Invoke-WebRequest -Uri "${URL}/_tasks?detailed=true&actions=*reindex" -Credential $Creds).content.length -lt 20)
      {
       write-host "Re-index failed"
     }
@@ -130,6 +130,10 @@ if( $readset -notmatch "acknowledged" )
         $latest= [math]::floor($perc)
         Write-Progress -activity "reindex in progress" -Status "Progress:" -PercentComplete $latest
         start-sleep 3
+          if ((Invoke-WebRequest -Uri "${URL}/_tasks?detailed=true&actions=*reindex" -Credential $Creds).content.length -lt 20)
+            {
+             write-host "Re-index failed"
+          }
         }until($latest -eq 100)
         write-host "Please delete index - $sname"   
   }
