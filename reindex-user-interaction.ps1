@@ -107,6 +107,7 @@ if( $readset -notmatch "acknowledged" )
     if ((Invoke-WebRequest -Uri "${URL}/_tasks?detailed=true&actions=*reindex" -Credential $Creds).content.length -lt 20)
      {
       write-host "Re-index failed"
+      exit 0
     }
   }until($latest -eq 100)
 
@@ -133,6 +134,7 @@ if( $readset -notmatch "acknowledged" )
           if ((Invoke-WebRequest -Uri "${URL}/_tasks?detailed=true&actions=*reindex" -Credential $Creds).content.length -lt 20)
             {
              write-host "Re-index failed"
+             exit 0
           }
         }until($latest -eq 100)
         write-host "Please delete index - $sname"   
